@@ -1,13 +1,16 @@
+import schemas
+from typing import List
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from tortoise.contrib.pydantic import pydantic_model_creator
 # -------------------------------------------------------- #
-from database.models import Region
-from database.models import Date
-from helpers import configure_db
-from helpers import http_404, current
+from helpers import current
 from helpers import metadata
+from helpers import http_404
+from helpers import configure_db
+from database.models import Date
+from database.models import Region
 
 
 api = FastAPI(
@@ -41,19 +44,19 @@ async def home_page():
     })
 
 
-@api.get('/api/v2/regions', tags=["Regions"])
+@api.get('/api/v2/regions', tags=["Regions"], response_model=List[schemas.Region])
 async def get_regions():
     return await Region.all()
 
 
-@api.get('/api/v2/regions/{id}', tags=["Regions"])
+@api.get('/api/v2/regions/{id}', tags=["Regions"], response_model=schemas.Region)
 async def get_region_by_id(id: int):
     data = Region.filter(hudud_id=id)
     resp: Region = await data.get_or_none() or http_404()
     return resp.full_format()
 
 
-@api.get('/api/v2/dates', tags=["Dates"])
+@api.get('/api/v2/dates', tags=["Dates"], response_model=List[schemas.Date])
 async def get_dates():
     regions = await Region.all()
     response = []
@@ -75,13 +78,13 @@ async def get_current(region: str):
     return data.response_format()
 
 
-@api.get('/api/v2/dates/today', tags=["Dates"])
+@api.get('/api/v2/dates/today', tags=["Dates"], response_model=List[schemas.Date])
 async def get_dates_today():
     query = await Region.all()
     return [await get_current(region=region.hudud) for region in query]
 
 
-@api.get('/api/v2/regions/{id}/dates/today', tags=["Dates"])
+@api.get('/api/v2/regions/{id}/dates/today', tags=["Dates"], response_model=List[schemas.Date])
 async def get_dates_today_by_region(id: int):
     data = await Region.filter(hudud_id=id).first()
     if data is None:
@@ -93,7 +96,7 @@ async def get_dates_today_by_region(id: int):
     return today_data.full_format()
 
 
-@api.get('/api/v2/regions/{id}/dates', tags=["Dates"])
+@api.get('/api/v2/regions/{id}/dates', tags=["Dates"], response_model=List[schemas.Date])
 async def get_dates_by_region(id: int):
     region = await Region.filter(hudud_id=id).first()
     if region is None:
@@ -103,7 +106,7 @@ async def get_dates_by_region(id: int):
     return [d.full_format() for d in dates]
 
 
-@api.get('/api/v2/regions/{region_id}/day/{day}', tags=["Dates"])
+@api.get('/api/v2/regions/{region_id}/day/{day}', tags=["Dates"], response_model=schemas.Date)
 async def get_spec_data(region_id: int, day: int):
     region = await Region.filter(hudud_id=region_id).first()
     if region is None:
