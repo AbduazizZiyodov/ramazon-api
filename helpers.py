@@ -5,7 +5,7 @@ from tortoise.contrib.fastapi import register_tortoise
 
 
 
-today = date.today().strftime("%Y-%m-%d")
+current = date.today().strftime("%Y-%m-%d")
 
 
 def configure_db(app: FastAPI):
