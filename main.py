@@ -1,12 +1,23 @@
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
 from tortoise.contrib.pydantic import pydantic_model_creator
-
-from database.models import Region, Date
-from helpers import configure_db, http_404, current
+# -------------------------------------------------------- #
+from database.models import Region
+from database.models import Date
+from helpers import configure_db
+from helpers import http_404, current
 
 
 api = FastAPI(title="RamazonAPI")
+
+api.add_middleware(
+    CORSMiddleware,
+    allow_credentials=True,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 configure_db(app=api)
 
