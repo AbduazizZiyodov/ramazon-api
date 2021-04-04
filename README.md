@@ -1,6 +1,8 @@
-# 1. Ramazon-API
+# Ramazon-API
 
-### **O'rnatish** 🇺🇿
+![FASTAPI_LOGO](/screenshots/fastapi.png)
+
+## **O'rnatish** 🇺🇿
 
 Ushbu repozitoriyani `git` buyruqlari asosida ko'chirib oling:
 
@@ -37,4 +39,8 @@ Endi esa http://127.0.0.1:8000 bo'yicha o'ting.
 
 **Skrinshot**
 
+>![SERVER](/screenshots/running_server.png)
+><p align="center"><small>Server ishga tushdi</small></p>
 
+>![SERVER](/screenshots/docs.png)
+><p align="center"><small>API qo'llanmasi</small></p>
