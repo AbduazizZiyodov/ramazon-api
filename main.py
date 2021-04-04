@@ -7,9 +7,18 @@ from database.models import Region
 from database.models import Date
 from helpers import configure_db
 from helpers import http_404, current
+from helpers import metadata
 
 
-api = FastAPI(title="RamazonAPI")
+api = FastAPI(
+    title="RamazonAPI",
+    openapi_tags=metadata,
+    version="2.0.0",
+    description=">**API** for Ramadan Calendar(2021). Author: Abduaziz Ziyodov",
+    openapi_url="/api/v2/openapi.json",
+    redoc_url=None,
+)
+
 
 api.add_middleware(
     CORSMiddleware,
@@ -21,11 +30,8 @@ api.add_middleware(
 
 configure_db(app=api)
 
-Region_pydantic = pydantic_model_creator(Region, name="Region")
-Date_pydantic = pydantic_model_creator(Date, name="Date")
 
-
-@api.get('/')
+@api.get('/', tags=["Basic Route"])
 async def home_page():
     return JSONResponse({
         "muvaffaqiyat": True,
@@ -35,19 +41,19 @@ async def home_page():
     })
 
 
-@api.get('/api/v2/regions')
+@api.get('/api/v2/regions', tags=["Regions"])
 async def get_regions():
     return await Region.all()
 
 
-@api.get('/api/v2/regions/{id}')
+@api.get('/api/v2/regions/{id}', tags=["Regions"])
 async def get_region_by_id(id: int):
     data = Region.filter(hudud_id=id)
     resp: Region = await data.get_or_none() or http_404()
     return resp.full_format()
 
 
-@api.get('/api/v2/dates')
+@api.get('/api/v2/dates', tags=["Dates"])
 async def get_dates():
     regions = await Region.all()
     response = []
@@ -69,13 +75,13 @@ async def get_current(region: str):
     return data.response_format()
 
 
-@api.get('/api/v2/dates/today')
+@api.get('/api/v2/dates/today', tags=["Dates"])
 async def get_dates_today():
     query = await Region.all()
     return [await get_current(region=region.hudud) for region in query]
 
 
-@api.get('/api/v2/regions/{id}/dates/today')
+@api.get('/api/v2/regions/{id}/dates/today', tags=["Dates"])
 async def get_dates_today_by_region(id: int):
     data = await Region.filter(hudud_id=id).first()
     if data is None:
@@ -87,7 +93,7 @@ async def get_dates_today_by_region(id: int):
     return today_data.full_format()
 
 
-@api.get('/api/v2/regions/{id}/dates')
+@api.get('/api/v2/regions/{id}/dates', tags=["Dates"])
 async def get_dates_by_region(id: int):
     region = await Region.filter(hudud_id=id).first()
     if region is None:
@@ -97,7 +103,7 @@ async def get_dates_by_region(id: int):
     return [d.full_format() for d in dates]
 
 
-@api.get('/api/v2/regions/{region_id}/day/{day}')
+@api.get('/api/v2/regions/{region_id}/day/{day}', tags=["Dates"])
 async def get_spec_data(region_id: int, day: int):
     region = await Region.filter(hudud_id=region_id).first()
     if region is None:

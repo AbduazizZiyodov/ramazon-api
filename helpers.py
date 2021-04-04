@@ -4,8 +4,21 @@ from fastapi import HTTPException
 from tortoise.contrib.fastapi import register_tortoise
 
 
-
 current = date.today().strftime("%Y-%m-%d")
+
+metadata = [
+    {
+        "name": "Regions",
+        "description": "Operations with regions"
+    },
+    {
+        "name": "Dates",
+        "description": "Operations with dates"
+    },
+    {
+        "name": "Basic Route"
+    },
+]
 
 
 def configure_db(app: FastAPI):
