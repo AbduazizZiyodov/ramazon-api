@@ -32,7 +32,7 @@ class Date(Model):
             "izoh": f'Ramazon {self.kun}',
             "vaqtlar": {
                     "iftorlik": self.iftar,
-                    "saharlik": self.iftar
+                    "saharlik": self.fajr
             }
         }
 
