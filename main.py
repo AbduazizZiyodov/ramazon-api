@@ -56,7 +56,7 @@ async def get_region_by_id(id: int):
     return resp.full_format()
 
 
-@api.get('/api/v2/dates', tags=["Dates"], response_model=List[schemas.Date])
+@api.get('/api/v2/dates', tags=["Dates"], response_model=List[schemas.Dates])
 async def get_dates():
     regions = await Region.all()
     response = []
@@ -65,7 +65,7 @@ async def get_dates():
         response.append({
             "hudud": region.hudud,
             "hudud_id": region.hudud_id,
-            "ma'lumotlar": [q.full_format() for q in query]
+            "data": [q.full_format() for q in query]
         })
     return response
 
@@ -78,13 +78,13 @@ async def get_current(region: str):
     return data.response_format()
 
 
-@api.get('/api/v2/dates/today', tags=["Dates"], response_model=List[schemas.Date])
+@api.get('/api/v2/dates/today', tags=["Dates"])
 async def get_dates_today():
     query = await Region.all()
     return [await get_current(region=region.hudud) for region in query]
 
 
-@api.get('/api/v2/regions/{id}/dates/today', tags=["Dates"], response_model=List[schemas.Date])
+@api.get('/api/v2/regions/{id}/dates/today', tags=["Dates"], response_model=schemas.Date)
 async def get_dates_today_by_region(id: int):
     data = await Region.filter(hudud_id=id).first()
     if data is None:
