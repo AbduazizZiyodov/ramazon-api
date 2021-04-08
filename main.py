@@ -44,19 +44,26 @@ async def home_page():
     })
 
 
-@api.get('/api/v2/regions', tags=["Regions"], response_model=List[schemas.Region])
+@api.get('/api/v2/regions',
+        tags=["Regions"],
+        response_model=List[schemas.Region])
 async def get_regions():
     return await Region.all()
 
 
-@api.get('/api/v2/regions/{id}', tags=["Regions"], response_model=schemas.Region)
+@api.get('/api/v2/regions/{id}',
+        tags=["Regions"],
+        response_model=schemas.Region)
 async def get_region_by_id(id: int):
     data = Region.filter(hudud_id=id)
     resp: Region = await data.get_or_none() or http_404()
+
     return resp.full_format()
 
 
-@api.get('/api/v2/dates', tags=["Dates"], response_model=List[schemas.Dates])
+@api.get('/api/v2/dates',
+        tags=["Dates"], 
+        response_model=List[schemas.Dates])
 async def get_dates():
     regions = await Region.all()
     response = []
@@ -65,13 +72,13 @@ async def get_dates():
         response.append({
             "hudud": region.hudud,
             "hudud_id": region.hudud_id,
-            "data": [q.full_format() for q in query]
-        })
+            "data": [q.full_format() for q in query]})
     return response
 
 
 async def get_current(region: str):
-    data = await Date.filter(kun_full=current, hudud=region).first()
+    data = await Date.filter(kun_full=current, hudud=region)\
+        .first()
     if data is None:
         return http_404()
 
@@ -84,34 +91,47 @@ async def get_dates_today():
     return [await get_current(region=region.hudud) for region in query]
 
 
-@api.get('/api/v2/regions/{id}/dates/today', tags=["Dates"], response_model=schemas.Date)
+@api.get('/api/v2/regions/{id}/dates/today',
+        tags=["Dates"], 
+        response_model=schemas.Date)
 async def get_dates_today_by_region(id: int):
     data = await Region.filter(hudud_id=id).first()
     if data is None:
         http_404()
-    today_data = await Date.filter(kun_full=current, hudud=data.hudud).first()
+    today_data = await Date\
+        .filter(kun_full=current, hudud=data.hudud).first()
+
     if today_data is None:
         return http_404()
 
     return today_data.full_format()
 
 
-@api.get('/api/v2/regions/{id}/dates', tags=["Dates"], response_model=List[schemas.Date])
+@api.get('/api/v2/regions/{id}/dates',
+        tags=["Dates"],
+        response_model=List[schemas.Date])
 async def get_dates_by_region(id: int):
     region = await Region.filter(hudud_id=id).first()
+
     if region is None:
         return http_404()
+
     dates = await Date.filter(hudud=region.hudud)
 
     return [d.full_format() for d in dates]
 
 
-@api.get('/api/v2/regions/{region_id}/day/{day}', tags=["Dates"], response_model=schemas.Date)
+@api.get('/api/v2/regions/{region_id}/day/{day}',
+        tags=["Dates"], 
+        response_model=schemas.Date)
 async def get_spec_data(region_id: int, day: int):
     region = await Region.filter(hudud_id=region_id).first()
+
     if region is None:
         return http_404()
-    date = await Date.filter(hudud=region.hudud, kun=day).first()
+
+    date = await Date.filter(hudud=region.hudud, kun=day)\
+                                                .first()
 
     if date is None:
         return http_404()
