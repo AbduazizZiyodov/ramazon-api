@@ -36,7 +36,6 @@ $ uvicorn main:api --reload
 Endi esa http://127.0.0.1:8000 bo'yicha o'ting.
 
 - http://127.0.0.1:8000/docs - **API** Qo'llanmasi `(1)`
-- http://127.0.0.1:8000/redoc - **API** Qo'llanmasi `(2)`
 
 **Skrinshot**
 
@@ -99,14 +98,13 @@ Javob (response):
 }
 ```
 
-
 ### `/dates` [**GET**]
 
-> Izoh: ma'lumotlar omboridagi ma'lumotlarni barchasini qaytaradi. Aynan shu punktda `mb` hajmga ega responselarni
+> Izoh: ma'lumotlar omboridagi ma'lumotlarni barchasini qaytaradi. Aynan shu punktda `mb` hajmga ega responselarni uchratishingiz mumkin :grin:
 
 ```bash
 $ curl -X 'GET' \
-  '{host}/api/v2/regions/{id}' \
+  '{host}/api/v2/dates' \
   -H 'accept: application/json'
 ```
 
@@ -115,8 +113,185 @@ $ curl -X 'GET' \
 Javob (response):
 
 ```json
+[
+  {
+    "hudud": "string1",
+    "hudud_id": 1,
+    "data": [
+      {
+        "kun": "string",
+        "hafta_kuni": "string",
+        "izoh": "string",
+        "vaqtlar": {
+          "iftorlik": "string",
+          "saharlik": "string"
+        }
+      },
+            {
+        "kun": "string",
+        "hafta_kuni": "string",
+        "izoh": "string",
+        "vaqtlar": {
+          "iftorlik": "string",
+          "saharlik": "string"
+        }
+      }
+      ...
+    ]
+  },
+  {
+    "hudud": "string2",
+    "hudud_id": 2,
+    "data": [
+      {
+        "kun": "string",
+        "hafta_kuni": "string",
+        "izoh": "string",
+        "vaqtlar": {
+          "iftorlik": "string",
+          "saharlik": "string"
+        }
+      },
+            {
+        "kun": "string",
+        "hafta_kuni": "string",
+        "izoh": "string",
+        "vaqtlar": {
+          "iftorlik": "string",
+          "saharlik": "string"
+        }
+      }
+      ...
+    ]
+  }
+  ...
+]
+```
+
+### `/regions/{region_id}/dates` [**GET**]
+
+> Izoh: Ma'lum bir hududga oid bo'lgan barcha kunlar haqidagi ma'lumotlarni qaytaradi
+
+```bash
+$ curl -X 'GET' \
+  '{host}/api/v2/regions/{region_id}/dates' \
+  -H 'accept: application/json'
+```
+
+- **region_id** - int
+
+Javob (response):
+
+```json
+[
+  {
+    "kun": "string1",
+    "hafta_kuni": "string1",
+    "izoh": "string",
+    "vaqtlar": {
+      "iftorlik": "string",
+      "saharlik": "string"
+    }
+  },
+  {
+    "kun": "string2",
+    "hafta_kuni": "string2",
+    "izoh": "string",
+    "vaqtlar": {
+      "iftorlik": "string",
+      "saharlik": "string"
+    }
+  }
+]
+```
+
+### `/dates/today` [**GET**]
+
+> Izoh: Bugungi kunga oid bo'lgan barcha ma'lumotlarni qaytaradi (barcha hududlar uchun)
+
+```bash
+$ curl -X 'GET' \
+  '{host}/api/v2/dates/today' \
+  -H 'accept: application/json'
+```
+
+Javob (response):
+
+```json
+[
+  "RegionName1": {
+    "kun": "string",
+    "hafta_kuni": "string",
+    "izoh": "string",
+    "vaqtlar": {
+      "iftorlik": "string",
+      "saharlik": "string"
+    }
+  },
+    "RegionName2": {
+    "kun": "string",
+    "hafta_kuni": "string",
+    "izoh": "string",
+    "vaqtlar": {
+      "iftorlik": "string",
+      "saharlik": "string"
+    }
+  }
+  ...
+]
+```
+
+### `/dates/today/{region_id}` [**GET**]
+
+> Izoh: Bugungi kunga oid bo'lgan maxsus hududga oid ma'lumotni qaytaradi.
+
+```bash
+$ curl -X 'GET' \
+  '{host}/api/v2/dates/today{region_id}' \
+  -H 'accept: application/json'
+```
+
+- **region_id** - int
+
+Javob (response):
+
+```json
 {
-  "hudud_id": 1,
-  "hudud": "string"
+  "kun": "string",
+  "hafta_kuni": "string",
+  "izoh": "string",
+  "vaqtlar": {
+    "iftorlik": "string",
+    "saharlik": "string"
+  }
+}
+```
+
+### `/regions/{region_id}/day/{day}` [**GET**]
+
+> Izoh: Ma'lum bir hududga oid bo'lgan maxsus kunga oid ma'lumotni qaytaradi
+
+```bash
+$ curl -X 'GET' \
+  '{host}/api/v2/regions/{region_id}/day/{day}' \
+  -H 'accept: application/json'
+```
+
+- **region_id** - int
+- **day** - int
+
+> day - ramazon oyining kuni. day=1 bo'lsa , bu ramazon oyining birinchi kuni ya'ni 13-aprel demakdir.
+
+Javob (response):
+
+```json
+{
+  "kun": "string",
+  "hafta_kuni": "string",
+  "izoh": "string",
+  "vaqtlar": {
+    "iftorlik": "string",
+    "saharlik": "string"
+  }
 }
 ```
