@@ -1,6 +1,12 @@
 # Ramazon-API
 
+## Kirish:
+
+*Assalomu alaykum* 👋 *Ismim Abduaziz, ramazon muborak* :grin: *Ushbu oyda barcha ro'za tutishadi, ularga esa saharlik va iftorlik vaqtlarini bilish o'ta muhim. Dasturchi sifatida xissa qo'sha olishim uchun, ushbu ma'lumotlarni API interfeysiga ko'chirdim. APIdan o'z loyihalaringizda bemalol foydalanishingiz mumkin, quyida o'rnatish va foydalanishga bag'ishlangan qisqagini qo'llanmamni keltiraman, marhamat:*
+
 ![FASTAPI_LOGO](/screenshots/fastapi.png)
+
+Ushbu API FastAPI + Tortoise ORMda yaratilgan. Lekin, `v1` flask + sqlalchemyda tayyorlangan edi. FastAPIga o'tishimga sabab, `v1`dan yetarlicha samaradorlik olaolmaganimdadir.
 
 ## **O'rnatish** 🇺🇿
 
@@ -47,11 +53,24 @@ Endi esa http://127.0.0.1:8000 bo'yicha o'ting.
 >
 > <p align="center"><small>API qo'llanmasi</small></p>
 
-# API
+# API 📗
 
-## `Region` endpointlari :
+API (**api/v2**) 8ta endpointga ega:
 
-### `/regions` [**GET**]
+- `/` - basic route deb nomladim, vazifasi shunchaki `/` bo'yicha o'tilganda `404` bermaslik 😅
+- `/regions` - hududlar haqida
+- `regions/{id}` - maxsus hudud haqida
+- `/dates` -vaqtlar haqida
+- `/regions/{id}/dates` - maxsus hududning vaqtlari haqida
+- `dates/today` - bugungi vaqtlar haqida
+- `regions/{id}/dates/today` - maxsus hududning bugungi vaqtlari haqida
+- `regions/{id}/day/{day}` - maxsus hududning maxsus kuni haqida
+
+## **Region** endpointlari :
+
+<hr>
+
+### 🟢`/regions` [**GET**]
 
 > Izoh: Barcha hududlar ro'yxatini qaytaradi (+`id`lari bilan birgalikda)
 
@@ -77,7 +96,7 @@ Javob (response):
 ]
 ```
 
-### `/regions/{id}` [**GET**]
+### 🟢`/regions/{id}` [**GET**]
 
 > Izoh: Maxsus hudud haqidagi ma'lumotni qaytaradi (+`id` bilan birgalikda)
 
@@ -98,7 +117,7 @@ Javob (response):
 }
 ```
 
-### `/dates` [**GET**]
+### 🟢`/dates` [**GET**]
 
 > Izoh: ma'lumotlar omboridagi ma'lumotlarni barchasini qaytaradi. Aynan shu punktda `mb` hajmga ega responselarni uchratishingiz mumkin :grin:
 
@@ -168,7 +187,7 @@ Javob (response):
 ]
 ```
 
-### `/regions/{region_id}/dates` [**GET**]
+### 🟢`/regions/{region_id}/dates` [**GET**]
 
 > Izoh: Ma'lum bir hududga oid bo'lgan barcha kunlar haqidagi ma'lumotlarni qaytaradi
 
@@ -205,7 +224,7 @@ Javob (response):
 ]
 ```
 
-### `/dates/today` [**GET**]
+### 🟢`/dates/today` [**GET**]
 
 > Izoh: Bugungi kunga oid bo'lgan barcha ma'lumotlarni qaytaradi (barcha hududlar uchun)
 
@@ -241,7 +260,7 @@ Javob (response):
 ]
 ```
 
-### `/dates/today/{region_id}` [**GET**]
+### 🟢`/dates/today/{region_id}` [**GET**]
 
 > Izoh: Bugungi kunga oid bo'lgan maxsus hududga oid ma'lumotni qaytaradi.
 
@@ -267,7 +286,7 @@ Javob (response):
 }
 ```
 
-### `/regions/{region_id}/day/{day}` [**GET**]
+### 🟢`/regions/{region_id}/day/{day}` [**GET**]
 
 > Izoh: Ma'lum bir hududga oid bo'lgan maxsus kunga oid ma'lumotni qaytaradi
 
