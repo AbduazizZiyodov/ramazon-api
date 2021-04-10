@@ -3,7 +3,6 @@ from typing import List
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
-from tortoise.contrib.pydantic import pydantic_model_creator
 # -------------------------------------------------------- #
 from helpers import current
 from helpers import metadata
