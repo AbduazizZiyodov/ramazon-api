@@ -1,11 +1,8 @@
-import pytz
-from datetime import datetime
 from fastapi import FastAPI
 from fastapi import HTTPException
 from tortoise.contrib.fastapi import register_tortoise
 
 
-current = datetime.now(pytz.timezone('Asia/Tashkent')).strftime("%Y-%m-%d")
 
 metadata = [
     {
