@@ -1,10 +1,11 @@
+import pytz
 import schemas
 from typing import List
 from fastapi import APIRouter
+from datetime import datetime
 # ----------------------------- #
 from database.models import Date
 from database.models import Region
-from helpers import current
 from helpers import http_404
 
 
@@ -28,6 +29,7 @@ async def get_dates():
 
 
 async def get_current(region: str):
+    current = datetime.now(pytz.timezone('Asia/Tashkent')).strftime("%Y-%m-%d")
     data = await Date.filter(kun_full=current, hudud=region)\
         .first()
     if data is None:
@@ -45,6 +47,7 @@ async def get_dates_today():
 @router.get('/regions/{id}/dates/today',
         response_model=schemas.Date)
 async def get_dates_today_by_region(id: int):
+    current = datetime.now(pytz.timezone('Asia/Tashkent')).strftime("%Y-%m-%d")
     data = await Region.filter(hudud_id=id).first()
     if data is None:
         http_404()
