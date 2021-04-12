@@ -1,5 +1,7 @@
 # Ramazon-API
 
+> Frontend (Angular): https://github.com/AbduazizZiyodov/ramadan.uz-frontend 
+
 ## Introduction
 
 _Assalamu alaikum_ 👋 _Ramadan Mubarak. Wishing you a blessed and Happy Ramadan_ :grin:_! Data about times in this month is extremely important. That's why I transferred this information to the API interface. In my opinion, this API will benefit everyone. And below I present my guide._
