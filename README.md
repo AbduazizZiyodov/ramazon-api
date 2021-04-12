@@ -1,7 +1,8 @@
 # Ramazon-API
 
-> Frontend (Angular): https://github.com/AbduazizZiyodov/ramadan.uz-frontend 
+> **Frontend** (`Angular`): http://ramadan.uz/, source code: https://github.com/AbduazizZiyodov/ramadan.uz-frontend 
 
+> **Backend** (`FastAPI`): http://ramadan.uz/api/v2/docs
 ## Introduction
 
 _Assalamu alaikum_ 👋 _Ramadan Mubarak. Wishing you a blessed and Happy Ramadan_ :grin:_! Data about times in this month is extremely important. That's why I transferred this information to the API interface. In my opinion, this API will benefit everyone. And below I present my guide._
@@ -43,9 +44,7 @@ $ uvicorn main:api --reload
 
 > `--reload` - if a change is made in the code, the server will load again ( shows efficiency on `debugging` :smile:)
 
-Navigate: http://127.0.0.1:8000
-
-- http://127.0.0.1:8000/docs - **API** docs `(1)`
+- http://127.0.0.1:8000/api/v2/docs - **API** docs `(1)`
 
 **Screenshots**
 
