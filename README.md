@@ -76,15 +76,15 @@ Simple Script for testing:
 ```python
 import requests
 
-def make_request(host, endpoint):
-    url = f"http://{host}/api/v2/{endpoint}"
+def make_request(endpoint):
+    url = f"https://ramadan.uz/api/v2/{endpoint}"
     response = requests.request("GET", url)
 
     print(response.text)
 
 if __name__ == "__main__":
-    host, endpoint = input('host>'), input('endpoint>')
-    make_request(host=host, endpoint=endpoint)
+    endpoint = input('endpoint>')
+    make_request(endpoint=endpoint)
 ```
 
 ![SCRIPT](/screenshots/script.png)
