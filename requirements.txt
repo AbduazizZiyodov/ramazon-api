@@ -11,7 +11,7 @@ MarkupSafe==1.1.1
 passlib==1.7.4
 prompt-toolkit==3.0.18
 pycparser==2.20
-pydantic==1.8.1
+pydantic>=1.8.2
 pypika-tortoise==0.1.0
 python-dotenv==0.17.0
 python-rapidjson==1.0
