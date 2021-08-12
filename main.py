@@ -1,11 +1,7 @@
-import schemas
-from typing import List
 from fastapi import FastAPI
-from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 # -------------------------------------------------------- #
 from helpers import metadata
-from helpers import http_404
 from helpers import configure_db
 from core.dates import dates
 from core.regions import regions
