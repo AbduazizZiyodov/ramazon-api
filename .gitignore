@@ -3,5 +3,4 @@ env/
 venv/
 __pycache__/
 .env
-util.py
 db.sqlite3*

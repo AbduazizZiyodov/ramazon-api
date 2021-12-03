@@ -3,7 +3,7 @@ import schemas
 from typing import List
 from fastapi import APIRouter
 from datetime import datetime
-# ----------------------------- #
+
 from database.models import Date
 from database.models import Region
 from helpers import http_404

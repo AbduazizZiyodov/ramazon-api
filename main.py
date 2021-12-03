@@ -1,10 +1,10 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-# -------------------------------------------------------- #
+
 from helpers import metadata
 from helpers import configure_db
-from core.dates import dates
-from core.regions import regions
+from services import dates
+from services import regions
 
 
 api = FastAPI(

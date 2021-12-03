@@ -1,7 +1,7 @@
 import schemas
 from typing import List
 from fastapi import APIRouter
-# -------------------------- #
+
 from database.models import Region
 from helpers import http_404
 
