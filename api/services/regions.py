@@ -1,27 +1,21 @@
-import schemas
 from typing import List
 from fastapi import APIRouter
 
-from database.models import Region
-from helpers import http_404
+import api.schemas.region as schemas
+from api.database.models import Region
 
 
 router = APIRouter(
     tags=["Regions"],
-    prefix='/api/v2'
+    prefix='/api'
 )
 
 
-@router.get('/regions',
-        response_model=List[schemas.Region])
-async def get_regions():
+@router.get('/regions', response_model=List[schemas.Region])
+async def regions():
     return await Region.all()
 
 
-@router.get('/regions/{id}',
-        response_model=schemas.Region)
-async def get_region_by_id(id: int):
-    data = Region.filter(hudud_id=id)
-    resp: Region = await data.get_or_none() or http_404()
-
-    return resp.full_format()
+@router.get('/regions/{region_id}', response_model=schemas.Region)
+async def region_detailed(region_id: int):
+    return await Region.get(pk=region_id)
