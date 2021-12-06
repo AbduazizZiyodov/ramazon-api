@@ -1,90 +1,82 @@
-import pytz
-import schemas
 from typing import List
+from datetime import date
+
 from fastapi import APIRouter
-from datetime import datetime
+from fastapi.exceptions import HTTPException
 
-from database.models import Date
-from database.models import Region
-from helpers import http_404
+import api.schemas as schemas
+from api.database.models import Date
+from api.database.models import Region
 
+from api.utils import generate_days
+from api.settings import get_current_time
 
 router = APIRouter(
     tags=["Dates"],
-    prefix='/api/v2'
+    prefix="/api"
 )
 
-@router.get('/dates',
-        response_model=List[schemas.Dates])
-async def get_dates():
-    regions = await Region.all()
-    response = []
-    for region in regions:
-        query = await Date.filter(hudud=region.hudud)
-        response.append({
-            "hudud": region.hudud,
-            "hudud_id": region.hudud_id,
-            "data": [q.full_format() for q in query]})
-    return response
+days = generate_days()
 
 
-async def get_current(region: str):
-    current = datetime.now(pytz.timezone('Asia/Tashkent')).strftime("%Y-%m-%d")
-    data = await Date.filter(kun_full=current, hudud=region)\
-        .first()
-    if data is None:
-        return http_404()
+@router.get(
+    "/dates",
+    response_model=List[schemas.Dates]
+)
+async def get_all_dates():
+    return [
+        {region.name: await region.dates}
+        for region in await Region.all()
+    ]
 
-    return data.response_format()
+
+@router.get(
+    "/regions/{region_id}/dates",
+    response_model=List[schemas.Date]
+)
+async def get_dates_by_region(region_id: int):
+    region: Region = await Region.get(pk=region_id)
+
+    return await region.dates
 
 
-@router.get('/dates/today')
+@router.get(
+    "/dates/today",
+    response_model=List[schemas.Dates]
+)
 async def get_dates_today():
-    query = await Region.all()
-    return [await get_current(region=region.hudud) for region in query]
+    current_day: date = get_current_time()
+
+    return [
+        {
+            region.name: await region.dates.filter(day=current_day)
+        }
+        for region in await Region.all()
+    ]
 
 
-@router.get('/regions/{id}/dates/today',
-        response_model=schemas.Date)
-async def get_dates_today_by_region(id: int):
-    current = datetime.now(pytz.timezone('Asia/Tashkent')).strftime("%Y-%m-%d")
-    data = await Region.filter(hudud_id=id).first()
-    if data is None:
-        http_404()
-    today_data = await Date\
-        .filter(kun_full=current, hudud=data.hudud).first()
+@router.get(
+    "/regions/{region_id}/dates/today",
+    response_model=schemas.Date
+)
+async def get_today_dates_by_region(region_id: int):
+    current_day: date = get_current_time()
+    region: Region = await Region.get(pk=region_id)
 
-    if today_data is None:
-        return http_404()
-
-    return today_data.full_format()
+    return await region.dates.filter(day=current_day).first()
 
 
-@router.get('/regions/{id}/dates',
-        response_model=List[schemas.Date])
-async def get_dates_by_region(id: int):
-    region = await Region.filter(hudud_id=id).first()
+@router.get(
+    "/regions/{region_id}/day/{day}",
+    response_model=schemas.Date
+)
+async def get_specific_date(region_id: int, day: int):
+    day_of_ramadan: int = days.get(day)
 
-    if region is None:
-        return http_404()
+    region: Region = await Region.get(pk=region_id)
+    _date: Date = await region.dates.filter(day=day_of_ramadan).first()
 
-    dates = await Date.filter(hudud=region.hudud)
+    if _date is None:
+        raise HTTPException(404)
 
-    return [d.full_format() for d in dates]
-
-
-@router.get('/regions/{region_id}/day/{day}',
-        response_model=schemas.Date)
-async def get_spec_data(region_id: int, day: int):
-    region = await Region.filter(hudud_id=region_id).first()
-
-    if region is None:
-        return http_404()
-
-    date = await Date.filter(hudud=region.hudud, kun=day)\
-                                                .first()
-
-    if date is None:
-        return http_404()
-
-    return date.full_format()
+    return _date

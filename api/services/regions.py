@@ -1,7 +1,7 @@
 from typing import List
 from fastapi import APIRouter
 
-import api.schemas.region as schemas
+import api.schemas as schemas
 from api.database.models import Region
 
 
