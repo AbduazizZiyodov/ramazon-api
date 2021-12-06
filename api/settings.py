@@ -1,3 +1,12 @@
+import pytz
+from datetime import (
+    date,
+    datetime,
+    timedelta
+)
+
+TESTING: bool = True
+
 TITLE: str = "RamadanAPI"
 
 DESCRIPTION: str = """
@@ -9,8 +18,6 @@ Wishing you a blessed and Happy Ramadan!
 This **API** will benefit everyone!
 <br> **Author: Abduaziz Ziyodov**
 """
-
-VERSION = (3, 0, 0)
 
 
 DATABASE_SETTINGS = {
@@ -37,11 +44,27 @@ FASTAPI_SETTINGS = {
             "name": "Basic Route"
         },
     ],
-    "version": "".join(map(str, VERSION)),
+    "version": "3.0.0",
     "description": DESCRIPTION,
     "redoc_url": None,
-    "docs_url": '/'
+    "docs_url": '/swagger'
 }
 
+TIMEZONE = "Asia/Tashkent"
 
-__all__ = ["FASTAPI_SETTINGS", "DATABASE_SETTINGS", ]
+
+def get_current_time() -> date:
+    """
+    Returns current DateTime according to timezone
+    """
+    return datetime.now(pytz.timezone(TIMEZONE)).date()
+
+
+MONTH: int = 30  # days
+
+START_OF_RAMADAN: date = date(2022, 4, 2)
+END_OF_RAMADAN: date = date(2022, 5, 2)
+
+if TESTING:
+    START_OF_RAMADAN: date = get_current_time()
+    END_OF_RAMADAN: date = START_OF_RAMADAN + timedelta(days=MONTH)
