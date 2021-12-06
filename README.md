@@ -53,7 +53,7 @@ $ uvicorn main:api
 $ gunicorn main:api --worker-class uvicorn.workers.UvicornWorker
 ```
 
-![SWAGGER_UI](/screenshots/swagger-ui.png)
+![SWAGGER_UI](/screenshots/swagger-ui.PNG)
 
 - `http://{{ host }}/swagger` - _Swagger UI_
 
