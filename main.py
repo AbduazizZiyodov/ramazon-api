@@ -1,24 +1,20 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from helpers import metadata
-from helpers import configure_db
-from services import dates
-from services import regions
+from tortoise.contrib.fastapi import register_tortoise
 
+from api import settings
+from api.services.dates import router as dates_router
+from api.services.regions import router as regions_router
+from api.services.simulate import router as simulate_router
 
-api = FastAPI(
-    title="RamazonAPI",
-    openapi_tags=metadata,
-    version="2.0.0",
-    description="**API** for Ramadan Calendar(2021). <br> Assalamu alaikum👋 Ramadan Mubarak. Wishing you a blessed and Happy Ramadan! <br> Data about times in this month is extremely important. <br> That's why I transferred this information to the **API** interface. In my opinion, this **API** will benefit everyone. <br> **Author: Abduaziz Ziyodov**",
-    openapi_url="/api/v2/openapi.json",
-    redoc_url=None,
-    docs_url='/api/v2/docs'
-)
+api = FastAPI(**settings.FASTAPI_SETTINGS)
 
-api.include_router(regions.router)
-api.include_router(dates.router)
+api.include_router(dates_router)
+api.include_router(regions_router)
+
+if settings.TESTING:
+    api.include_router(simulate_router)
 
 api.add_middleware(
     CORSMiddleware,
@@ -28,4 +24,4 @@ api.add_middleware(
     allow_headers=["*"],
 )
 
-configure_db(app=api)
+register_tortoise(api, **settings.DATABASE_SETTINGS)
