@@ -60,7 +60,7 @@ def get_current_time() -> date:
 MONTH: int = 30  # days
 
 START_OF_RAMADAN: date = date(2022, 4, 2)
-END_OF_RAMADAN: date = date(2022, 5, 2)
+END_OF_RAMADAN: date = date(2022, 5, 3)
 
 if TESTING:
     START_OF_RAMADAN: date = get_current_time()
