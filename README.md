@@ -3,7 +3,8 @@
 ![FASTAPI_LOGO](/screenshots/fastapi.png)
 
 <p align="center"> 
-  _Assalamu alaikum_ 👋 _Ramadan Mubarak. Wishing you a blessed and Happy Ramadan_ 😀
+  Assalamu alaikum 👋 <br>
+  Ramadan Mubarak. Wishing you a blessed and Happy Ramadan 😀
 </p>
 
 ## **🧰 Setup**
@@ -34,23 +35,31 @@ $ python -m venv env && source env/bin/activate
 Install all required packages using `pip` from `requirements.txt` file.
 
 ```bash
-$ pip3 install -r requirements.txt
+$ pip install -r requirements.txt
+```
+
+> Or, you can use `poetry` (if you have).
+
+```
+$ poetry install
 ```
 
 # **🚀Running Server**
 
 To run fastapi application you will have to use `uvicorn` or `gunicorn`.
 
-**Uvicorn** 🦄:
+### **Uvicorn** 🦄
+
+> `--reload` - reloading for development server.
 
 ```bash
-$ uvicorn main:api
+$ uvicorn main:api --reload
 ```
 
-**Gunicorn** (🟢)🦄:
+### **Gunicorn** (🟢)🦄
 
 ```bash
-$ gunicorn main:api --worker-class uvicorn.workers.UvicornWorker
+$ gunicorn main:api --worker-class uvicorn.workers.UvicornWorker --reload
 ```
 
 ![SWAGGER_UI](/screenshots/swagger-ui.PNG)
@@ -58,6 +67,28 @@ $ gunicorn main:api --worker-class uvicorn.workers.UvicornWorker
 - `http://{{ host }}/swagger` - _Swagger UI_
 
 <hr><br>
+
+## **✨Mocking Database**
+
+After running server, you should send `GET` request to `/simulate` endpoint from anywhere(swagger UI, curl, postman ...). The results of mocking will be logged on your terminal.
+
+![MOCK_RESULT](/screenshots/mock-result.PNG)
+
+## **🧪 Running Tests**
+
+Running with `poetry`:
+
+```bash
+$ poetry run pytest
+```
+
+or
+
+```bash
+$ pytest
+```
+
+![TEST](/screenshots/test-result.PNG)
 
 <p align="center"> 
   🐍 Abduaziz Ziyodov 
