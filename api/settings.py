@@ -39,10 +39,7 @@ FASTAPI_SETTINGS = {
         {
             "name": "Dates",
             "description": "Operations with dates"
-        },
-        {
-            "name": "Basic Route"
-        },
+        }
     ],
     "version": "3.0.0",
     "description": DESCRIPTION,
