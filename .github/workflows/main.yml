@@ -1,0 +1,26 @@
+name: FastAPI CI
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - "api/**"
+      - "tests/**"
+  
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: 🐍 Set up Python
+        uses: actions/setup-python@v2
+        
+      - name: ✨ Install Backend Dependencies
+        run: |
+          python -m pip install -U pip 
+          pip install -r requirements.txt
+      - name: 🚀 Run tests
+        run: |
+          pytest
