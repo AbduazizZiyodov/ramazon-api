@@ -18,3 +18,4 @@ toml==0.10.2
 tortoise-orm==0.17.8
 typing_extensions==4.0.1
 uvicorn==0.15.0
+rich==10.15.2 
