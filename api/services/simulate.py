@@ -1,5 +1,5 @@
-import rich
 import subprocess
+from rich import print
 
 from fastapi import APIRouter
 from api.utils import generate_days
@@ -7,7 +7,7 @@ from api.utils import generate_days
 from api.database.models import Date
 from api.database.models import Region
 
-router = APIRouter(tags=["Simulate"])
+router = APIRouter(tags=["Mocking (simulation)"])
 
 
 @router.get("/simulate")
@@ -57,6 +57,11 @@ async def simulate():
                 for day in days.values()
             ]
         )
-    rich.print("[bold green] Success :tada: :tada: :tada:")
+        dates = await region.dates
+        print(
+            f"[bold green]:fire: Region: [bold red]{region.name} {len(dates)}")
+
+    print(
+        f"[bold cyan] Success! Total regions: {len(region_objects)} :tada: ")
 
     return {}
