@@ -1,4 +1,6 @@
 import pytest
+import pytest_asyncio
+
 import typing as t
 from json import loads
 
@@ -7,19 +9,19 @@ from utils import *
 client = CustomAsyncTestClient()
 
 
-@pytest.fixture
+@pytest_asyncio.fixture
 async def random_region_id():
     response = await client.send_request(GET, "api/regions")
     pytest.RANDOM_REGION_ID = random_index(loads(response.text))
 
 
-@pytest.fixture
+@pytest_asyncio.fixture
 async def regions_count():
     response = await client.send_request(GET, "api/regions")
     pytest.REGIONS_COUNT = len(loads(response.text))
 
 
-@pytest.mark.anyio
+@pytest.mark.asyncio
 async def test_dates():
     response = await client.send_request(GET, "api/dates")
     body: t.List[dict] = loads(response.text)
@@ -39,7 +41,7 @@ async def test_dates():
     ) is True
 
 
-@pytest.mark.anyio
+@pytest.mark.asyncio
 async def test_region_dates(random_region_id):
     response = await client.send_request(GET, f"api/regions/{pytest.RANDOM_REGION_ID}/dates")
     body: t.List[dict] = loads(response.text)
@@ -54,7 +56,7 @@ async def test_region_dates(random_region_id):
     ) is True
 
 
-@pytest.mark.anyio
+@pytest.mark.asyncio
 async def test_today_dates(regions_count):
     response = await client.send_request(GET, "api/dates/today")
     body: t.List[dict] = loads(response.text)
@@ -69,7 +71,7 @@ async def test_today_dates(regions_count):
     assert date["day"] == str(get_current_time())
 
 
-@pytest.mark.anyio
+@pytest.mark.asyncio
 async def test_today_dates_for_spec_region(random_region_id):
     response = await client.send_request(
         GET,
@@ -83,16 +85,22 @@ async def test_today_dates_for_spec_region(random_region_id):
     assert all([key in ["day", "iftar", "fajr"] for key in body.keys()])
     assert body["day"] == str(get_current_time())
 
+DAYS_IN_MONTH: int = 31
 
-@pytest.mark.anyio
-async def test_spec_day_dates_for_spec_region(random_region_id):
-    random_day = random_index(range(1, 30))
-    response = await client.send_request(
-        GET,
-        f"api/regions/{pytest.RANDOM_REGION_ID}/day/{random_day}"
-    )
 
-    body: t.List[dict] = loads(response.text)
+@pytest.mark.asyncio
+async def test_spec_day_dates_for_spec_regions(regions_count):
+    for region_id in range(1, pytest.REGIONS_COUNT+1):
+        for day in range(1, DAYS_IN_MONTH+1):
+            response = await client.send_request(
+                GET,
+                f"api/regions/{region_id}/day/{day}"
+            )
 
-    assert response.status_code == 200
-    assert all([key in ["day", "iftar", "fajr"] for key in body.keys()])
+            body: t.List[dict] = loads(response.text)
+
+            assert response.status_code == 200
+            assert all(
+                [key in ["day", "iftar", "fajr"]
+                 for key in body.keys()]
+            )

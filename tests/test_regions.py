@@ -1,4 +1,6 @@
 import pytest
+import pytest_asyncio
+
 import typing as t
 from json import loads
 
@@ -7,7 +9,13 @@ from utils import *
 client = CustomAsyncTestClient()
 
 
-@pytest.mark.anyio
+@pytest_asyncio.fixture
+async def random_region_id():
+    response = await client.send_request(GET, "api/regions")
+    pytest.RANDOM_REGION_ID = random_index(loads(response.text))
+
+
+@pytest.mark.asyncio
 async def test_list_regions():
     response = await client.send_request(GET, "api/regions")
     body: t.Optional[t.List[dict]] = loads(response.text)
@@ -16,14 +24,8 @@ async def test_list_regions():
     assert "id" in body[random_index(body)].keys()
 
 
-@pytest.fixture
-async def random_region_id():
-    response = await client.send_request(GET, "api/regions")
-    pytest.RANDOM_REGION_ID = random_index(loads(response.text))
-
-
-@pytest.mark.anyio
-async def test_list_regions(random_region_id):
+@pytest.mark.asyncio
+async def test_region_detailed(random_region_id):
     response = await client.send_request(
         GET,
         f"api/regions/{pytest.RANDOM_REGION_ID}"
