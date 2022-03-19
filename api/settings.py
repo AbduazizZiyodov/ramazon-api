@@ -1,11 +1,10 @@
+from typing import List
 import pytz
 from datetime import (
     date,
     datetime,
     timedelta
 )
-
-TESTING: bool = True
 
 TITLE: str = "RamadanAPI"
 
@@ -44,10 +43,41 @@ FASTAPI_SETTINGS = {
     "version": "3.0.0",
     "description": DESCRIPTION,
     "redoc_url": None,
-    "docs_url": '/swagger'
+    "docs_url": '/swagger',
+    "debug": True
 }
 
 TIMEZONE = "Asia/Tashkent"
+
+regions_names: List[str] = [
+    # Toshkent
+    'Toshkent', 'Angren', 'Piskent', 'Bekobod', 'Parkent', "G'azalkent", 'Olmaliq',
+    "Boka", "Yangiyo'l", 'Nurafshon',
+    # Buxoro
+    'Buxoro', 'Gazli', "G'ijduvon", "Qorako'l", 'Jondor',
+    # Fargona
+    "Farg'ona", "Marg'ilon", "Qo'qon", "Quva", 'Rishton', "Bog'dod", "Oltiariq",
+    # Sirdaryo
+    'Guliston', 'Sardoba', 'Sirdaryo', 'Boyovut', 'Paxtaobod',
+    # Jizzax
+    'Jizzax', 'Zomin', 'Forish', "G'allaorol", "Do'stlik",
+    # Navoiy
+    "Navoiy", 'Zarafshon', 'Konimex', 'Nurota', 'Uchquduq',
+    # Namangan
+    'Mingbuloq', 'Namangan', 'Chortoq', 'Chust', 'Pop', "Uchqo'rg'on",
+    # Qoraqalpogiston
+    'Nukus', "Mo'ynoq", "Taxtako'pir", "To'rtkol", "Qo'ng'irot",
+    # Samarqand
+    'Samarqand', 'Ishtixon', 'Mirbozor', "Kattaqo'rg'on", 'Urgut',
+    # Surxondaryo
+    'Termiz', 'Boysun', 'Denov', 'Sherobod', "Sho'rchi",
+    # Qashqadaryo
+    'Qarshi', 'Dehqonobod', 'Muborak', 'Shahrisabz', "G'uzor",
+    # Andijon
+    'Andijon', 'Xonobod', 'Shahrixon', "Xo'jaobod", 'Asaka', 'Marhamat', "Paytug'",
+    # Xorazm
+    'Urganch', 'Hazorasp', 'Xonqa', 'Yangibozor', 'Shovot', 'Xiva'
+]
 
 
 def get_current_time() -> date:
@@ -57,11 +87,11 @@ def get_current_time() -> date:
     return datetime.now(pytz.timezone(TIMEZONE)).date()
 
 
-MONTH: int = 30  # days
+MONTH: int = 31  # days
 
-START_OF_RAMADAN: date = date(2022, 4, 2)
-END_OF_RAMADAN: date = date(2022, 5, 3)
-
-if TESTING:
+if FASTAPI_SETTINGS.get("debug"):
     START_OF_RAMADAN: date = get_current_time()
     END_OF_RAMADAN: date = START_OF_RAMADAN + timedelta(days=MONTH)
+else:
+    START_OF_RAMADAN: date = date(2022, 4, 2)
+    END_OF_RAMADAN: date = date(2022, 5, 3)
