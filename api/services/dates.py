@@ -5,8 +5,7 @@ from fastapi import APIRouter
 from fastapi.exceptions import HTTPException
 
 import api.schemas as schemas
-from api.database.models import Date
-from api.database.models import Region
+from api.database.models import *
 
 from api.utils import generate_days
 from api.settings import get_current_time

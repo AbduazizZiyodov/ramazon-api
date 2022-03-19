@@ -25,3 +25,6 @@ class Date(Model):
 
     def __str__(self):
         return str(self.day)
+
+
+__all__ = ["Region", "Date", ]
