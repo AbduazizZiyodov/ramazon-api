@@ -1,4 +1,7 @@
+from rich import print
 from fastapi import FastAPI
+from datetime import date
+from datetime import datetime
 from datetime import timedelta
 from fastapi.middleware.cors import CORSMiddleware
 from tortoise.contrib.fastapi import register_tortoise
@@ -41,3 +44,29 @@ def setUp(app: FastAPI, routers: list):
         app.include_router(router)
 
     register_tortoise(app, **settings.DATABASE_SETTINGS)
+
+
+def print_region(region, dates):
+    print(
+        f"[bold green]:fire: Region: [bold red]{region.name} {len(dates)}")
+
+
+def print_total(regions):
+    print(
+        f"[bold cyan] Success! Total regions: {len(regions)} :tada: ")
+
+
+def to_datetime(_date: date, data: dict) -> datetime:
+    def helper(time: str):
+        return datetime(
+            year=_date.year,
+            month=_date.month,
+            day=_date.day,
+            hour=int(time[:2]),
+            minute=int(time[3:])
+        )
+
+    return dict(
+        fajr=helper(data["saharlik"]),
+        iftar=helper(data["iftorlik"])
+    )
