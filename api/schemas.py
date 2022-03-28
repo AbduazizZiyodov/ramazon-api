@@ -14,6 +14,8 @@ class Region(BaseModel):
 
 class Date(BaseModel):
     day: date
+    day_full: str
+    day_of_ramadan: int
 
     fajr: datetime
     iftar: datetime
