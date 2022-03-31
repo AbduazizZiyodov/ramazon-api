@@ -23,3 +23,19 @@ class Date(BaseModel):
 
 class Dates(BaseModel):
     __root__: Dict[str, List[Date]]
+
+
+class TodayDates(BaseModel):
+    __root__: Dict[str, Date]
+
+
+class AdditionalInfo(BaseModel):
+    day: int
+    month: str
+    weekday: str
+    day_of_ramadan: int
+
+
+class Today(BaseModel):
+    date: date
+    additional_info: AdditionalInfo
