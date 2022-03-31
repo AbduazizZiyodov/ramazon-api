@@ -44,7 +44,7 @@ FASTAPI_SETTINGS = {
     "description": DESCRIPTION,
     "redoc_url": None,
     "docs_url": '/swagger',
-    "debug": False
+    "debug": True
 }
 
 TIMEZONE = "Asia/Tashkent"
@@ -79,19 +79,25 @@ regions_names: List[str] = [
     'Urganch', 'Hazorasp', 'Xonqa', 'Yangibozor', 'Shovot', 'Xiva'
 ]
 
+DAYS = {
+    0: "Dushanba",
+    1: "Seshanba",
+    2: "Chorshanba",
+    3: "Payshanba",
+    4: "Juma",
+    5: "Shanba",
+    6: "Yakshanba",
+}
 
-def get_current_time() -> date:
-    """
-    Returns current DateTime according to timezone
-    """
-    return datetime.now(pytz.timezone(TIMEZONE)).date()
+MONTHS = {
+    3: "Mart",
+    4: "Aprel",
+    5: "May",
+}
+
 
 
 MONTH: int = 30  # days
 
-if FASTAPI_SETTINGS.get("debug"):
-    START_OF_RAMADAN: date = get_current_time()
-    END_OF_RAMADAN: date = START_OF_RAMADAN + timedelta(days=MONTH)
-else:
-    START_OF_RAMADAN: date = date(2022, 4, 2)
-    END_OF_RAMADAN: date = START_OF_RAMADAN + timedelta(MONTH)
+START_OF_RAMADAN: date = date(2022, 4, 2)
+END_OF_RAMADAN: date = START_OF_RAMADAN + timedelta(MONTH)
