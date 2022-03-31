@@ -67,7 +67,7 @@ async def test_today_dates(regions_count):
     assert len(body) == pytest.REGIONS_COUNT
 
     random_region_date: dict = body[random_index(body)-1]
-    date = [data[0] for data in random_region_date.values()][0]
+    date = [data for data in random_region_date.values()][0]
 
     assert all(
         [
@@ -118,3 +118,18 @@ async def test_spec_day_dates_for_spec_regions(regions_count):
                     for key in body.keys()
                 ]
             )
+
+
+@pytest.mark.asyncio
+async def test_today_info():
+    response = await client.send_request(
+        GET,
+        "api/today"
+    )
+
+    body: t.List[dict] = loads(response.text)
+
+    assert all([
+        field in ["month", "weekday", "day", "day_of_ramadan"]
+        for field in body["additional_info"].keys()
+    ] + ["date" in body.keys()])

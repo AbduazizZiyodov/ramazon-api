@@ -42,7 +42,9 @@ def get_current_time() -> date:
     """
     Returns current DateTime according to timezone
     """
-    return datetime.now(pytz.timezone("Asia/Tashkent")).date()
+    if PRODUCTION:
+        return datetime.now(pytz.timezone("Asia/Tashkent")).date()
+    return date(2022, 4, 24)
 
 
 __all__ = ["CustomAsyncTestClient", "random_index",
