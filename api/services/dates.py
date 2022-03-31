@@ -8,7 +8,7 @@ import api.schemas as schemas
 from api.database.models import *
 
 from api.utils import generate_days
-from api.settings import get_current_time
+from api.utils import get_current_time
 
 router = APIRouter(
     tags=["Dates"],
@@ -16,6 +16,11 @@ router = APIRouter(
 )
 
 days = generate_days()
+
+
+@router.get("/today",response_model=schemas.Today)
+async def get_today():
+    return get_current_time(full_format=True)
 
 
 @router.get(
@@ -41,14 +46,14 @@ async def get_dates_by_region(region_id: int):
 
 @router.get(
     "/dates/today",
-    response_model=List[schemas.Dates]
+    response_model=List[schemas.TodayDates]
 )
 async def get_dates_today():
     current_day: date = get_current_time()
 
     return [
         {
-            region.name: await region.dates.filter(day=current_day)
+            region.name: await region.dates.filter(day=current_day).first()
         }
         for region in await Region.all()
     ]
