@@ -19,3 +19,5 @@ tortoise-orm==0.17.8
 typing_extensions==4.0.1
 uvicorn==0.15.0
 rich==10.15.2 
+sentry-sdk==1.5.7
+python-dotenv==0.20.0
