@@ -6,8 +6,6 @@
     <img alt="bruh" src="https://abduaziz.ziyodov.uz/badges/ai-free-dark.svg">
   </picture>
 </p>
-  
-![FASTAPI_LOGO](/screenshots/fastapi.png)
 
 <p align="center"> 
   Assalamu alaikum 👋 <br>
